@@ -1,0 +1,42 @@
+#include <iostream>
+
+int* make_positives(int* begin, int* end, int& new_size) {
+    int* result = new int[end - begin];
+    int* write = result;
+
+    for (int* ptr = begin; ptr != end; ++ptr) {
+        if (*ptr > 0) {
+            *write = *ptr;
+            ++write;
+        }
+    }
+
+    new_size = write - result;
+    return result;
+}
+
+int main() {
+    int n = 0;
+    std::cin >> n;
+
+    int* arr = new int[n];
+    for (int* ptr = arr; ptr != arr + n; ++ptr) {
+        std::cin >> *ptr;
+    }
+
+    int new_size = 0;
+    int* pos = make_positives(arr, arr + n, new_size);
+
+    std::cout << new_size << "\n";
+    for (int* ptr = pos; ptr != pos + new_size; ++ptr) {
+        std::cout << *ptr << " ";
+    }
+    std::cout << "\n";
+
+    delete[] arr;
+    delete[] pos;
+    arr = nullptr;
+    pos = nullptr;
+
+    return 0;
+}
