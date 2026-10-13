@@ -1,0 +1,124 @@
+#include <iostream>
+
+// ===== Общие функции =====
+
+int** memory_allocation(int rows, int cols) {
+    int** matrix = new int*[rows];
+    for (int i{}; i < cols; ++i)
+        matrix[i] = new int[cols];
+    return matrix;
+}
+
+void read_matrix(int** matrix, int rows, int cols, std::istream& stream) {
+    for (int i{}; i < rows; ++i)
+        for (int j{}; j < cols; ++j)
+            stream >> matrix[i][j];
+}
+
+void print_matrix(int** matrix, int rows, int cols, const std::string& message = "") {
+    if (!message.empty())
+        std::cout << message << '\n';
+    for (int i{}; i < rows; ++i) {
+        for (int j{}; j < cols; ++j)
+            std::cout << matrix[i][j] << ' ';
+        std::cout << '\n';
+    }
+}
+
+void memory_deallocation(int** matrix, int rows, int cols) {
+    for (int i{}; i < cols; ++i)
+        delete[] matrix[i];
+    delete[] matrix;
+    matrix = nullptr;
+}
+
+
+// ===== Задание 5. Минимум каждого столбца =====
+
+void min_columns(int** matrix, int rows, int cols) {
+    for (int j{}; j < cols; ++j) {
+        int result = matrix[0][j];
+        for (int i{}; i < rows; ++i) {
+            if (matrix[i][j] < result)
+                result = matrix[i][j];
+        }
+        std::cout << result << ' ';
+    }
+    std::cout << '\n';
+}
+
+void task_5() {
+    int rows = 0;
+    int cols = 0;
+    std::cin >> rows >> cols;
+
+    int** matrix = memory_allocation(rows, cols);
+    read_matrix(matrix, rows, cols, std::cin);
+
+    min_columns(matrix, rows, cols);
+
+    memory_deallocation(matrix, rows, cols);
+}
+
+
+// ===== Задание 7. Транспонирование =====
+
+void print_transposed(int** matrix, int rows, int cols) {
+    for (int j{}; j < cols; ++j) {
+        for (int i{}; i < rows; ++i)
+            std::cout << matrix[i][j] << ' ';
+        std::cout << '\n';
+    }
+}
+
+void task_7() {
+    int rows = 0;
+    int cols = 0;
+    std::cin >> rows >> cols;
+
+    int** matrix = memory_allocation(rows, cols);
+    read_matrix(matrix, rows, cols, std::cin);
+
+    print_transposed(matrix, rows, cols);
+
+    memory_deallocation(matrix, rows, cols);
+}
+
+
+// ===== Задание 8. Проверка симметричности =====
+
+bool is_symmetric(int** matrix, int n) {
+    for (int i{}; i < n; ++i) {
+        for (int j{}; j < n; ++j) {
+            if (matrix[i][j] != matrix[j][i])
+                return false;
+        }
+    }
+    return true;
+}
+
+void task_8() {
+    int n = 0;
+    std::cin >> n;
+
+    int** matrix = memory_allocation(n, n);
+    read_matrix(matrix, n, n, std::cin);
+
+    if (is_symmetric(matrix, n))
+        std::cout << "yes" << '\n';
+    else
+        std::cout << "no" << '\n';
+
+    memory_deallocation(matrix, n, n);
+}
+
+
+// ===== main =====
+
+int main() {
+    task_5();
+    task_7();
+    task_8();
+
+    return 0;
+}
